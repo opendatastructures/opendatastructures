@@ -53,3 +53,6 @@ dkms.conf
 
 # debug information files
 *.dwo
+
+#buildid
+.obs_build_id.txt
