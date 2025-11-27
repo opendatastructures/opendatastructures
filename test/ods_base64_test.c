@@ -39,7 +39,7 @@
         ------------------------------------------------------------------------
 */
 
-#include "../src/ods_base64.c"
+#include "ods_base64.c"
 #include "../include/testrun.h"
 
 static bool testing = true;

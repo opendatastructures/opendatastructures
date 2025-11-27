@@ -97,7 +97,7 @@ ODS_TARGET           = $(ODS_STATIC) $(ODS_SHARED)
 ODS_TEST_TARGET      = $(addprefix $(ODS_TESTDIR)/,$(patsubst %.c,%.run, $(notdir $(ODS_TEST_SOURCES))))
 #.............................................................................
 # test sources directory
-ODS_TEST_RESOURCE_DIR := $(ODS_BUILDDIR)/test/$(ODS_DIRNAME)/resources/
+ODS_TEST_RESOURCE_DIR := $(ODS_BUILDDIR)/test/resources
 
 #.............................................................................
 
