@@ -56,3 +56,5 @@ dkms.conf
 
 #buildid
 .obs_build_id.txt
+
+build/

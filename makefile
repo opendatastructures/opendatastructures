@@ -181,3 +181,5 @@ $(ODS_LIBDIR)/$(ODS_SHARED_SONAME): $(ODS_LIBDIR)/$(ODS_SHARED_REAL)
 	@echo "[LINK   ] $(notdir $@) created"
 
 #-----------------------------------------------------------------------------
+
+include ./makefiles/makefile_install.mk
