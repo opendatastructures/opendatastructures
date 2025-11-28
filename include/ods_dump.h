@@ -31,69 +31,70 @@
 
     ----------------------------------------------------------------------------
 *//**
-        @file           ods_match_functions.c
-
-        @brief          Implementation of some default match functions.
+        @file           ods_dump.h
+        @brief          Definition of dumps.
 
 
         ------------------------------------------------------------------------
 */
-#include "../include/ods_match_functions.h"
+#ifndef ods_dump_h
+#define ods_dump_h
+
+#include <inttypes.h>
+#include <stdbool.h>
+#include <stdio.h>
 
 #include <string.h>
-#include <strings.h>
 
-bool ods_match_strict(const void *key, const void *string) {
+#include <arpa/inet.h>
+#include <netdb.h>
+#include <unistd.h>
 
-    if (!key || !string) return false;
+#include <sys/socket.h>
+#include <sys/types.h>
 
-    size_t len = strlen(string);
+/*----------------------------------------------------------------------------*/
 
-    if (strlen(key) != len) return false;
+/**
+        Dump binary as hex to stream.
+        @return true on success, false on error
+ */
+bool ods_dump_binary_as_hex(FILE *stream, uint8_t *binary, uint64_t length);
 
-    if (0 == memcmp(key, string, len)) return true;
+/*----------------------------------------------------------------------------*/
 
-    return false;
-}
-
-/*---------------------------------------------------------------------------*/
-
-bool ods_match_c_string_strict(const void *key, const void *string) {
-
-    if (key == string) return true;
-
-    if (!key || !string) return false;
-
-    if (0 == strcmp(key, string)) return true;
-
-    return false;
-}
+/**
+        Dump the content of the addrinfo to stream.
+*/
+bool ods_dump_socket_addrinfo(FILE *stream, struct addrinfo *info);
 
 /*---------------------------------------------------------------------------*/
 
-bool ods_match_c_string_case_ignore_strict(const void *key, const void *string) {
-
-    if (key == string) return true;
-
-    if (!key || !string) return false;
-
-    if (0 == strcasecmp(key, string)) return true;
-
-    return false;
-}
+/**
+        Dump the content of the sockaddr to stream.
+*/
+bool ods_dump_socket_sockaddr(FILE *stream, struct sockaddr *addr);
 
 /*---------------------------------------------------------------------------*/
 
-bool ods_match_intptr(const void *ptr1, const void *ptr2) {
-
-    return (ptr1 == ptr2);
-}
+/**
+        Dump the content of the sockaddr_storage to stream.
+*/
+bool ods_dump_socket_sockaddr_storage(FILE *stream,
+                                     struct sockaddr_storage *addr);
 
 /*---------------------------------------------------------------------------*/
 
-bool ods_match_uint64(const void *ptr1, const void *ptr2) {
+/**
+        Dump the content of the sockaddr_in to stream.
+*/
+bool ods_dump_socket_sockaddr_in(FILE *stream, struct sockaddr_in *addr);
 
-    if (!ptr1 || !ptr2) return false;
+/*---------------------------------------------------------------------------*/
 
-    return ((*(uint64_t *)ptr1) == (*(uint64_t *)ptr2));
-}
+/**
+        Dump the content of the sockaddr_in6 to stream.
+*/
+bool ods_dump_socket_sockaddr_in6(FILE *stream, struct sockaddr_in6 *addr);
+
+#endif /* ods_dump_h */

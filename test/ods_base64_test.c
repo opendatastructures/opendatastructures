@@ -1,7 +1,7 @@
 /***
     ----------------------------------------------------------------------------
 
-    Copyright 2025 Markus Töpfer
+    Copyright 2025 German Space Operations Center (GSOC) DLR e.V.
 
     Redistribution and use in source and binary forms, with or without 
     modification, are permitted provided that the following conditions are met:
@@ -32,8 +32,6 @@
     ----------------------------------------------------------------------------
 *//**
         @file           ods_base64_test.c
-        @author         Markus Toepfer
-
         @brief          Test of base64 Encoding.
 
         ------------------------------------------------------------------------

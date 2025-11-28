@@ -1,7 +1,7 @@
 # -*- Makefile -*-
 #       ------------------------------------------------------------------------
 #
-#    Copyright 2025 Markus Töpfer
+#   Copyright 2025 German Space Operations Center (GSOC) DLR e.V.
 #
 #   Redistribution and use in source and binary forms, with or without 
 #   modification, are permitted provided that the following conditions are met:
@@ -31,8 +31,8 @@
 #
 #       ------------------------------------------------------------------------
 
--include ./makefiles/makefile_version.mk 
--include ./makefiles/makefile_const.mk 
+include ./makefiles/makefile_version.mk 
+include ./makefiles/makefile_const.mk 
 
 #-----------------------------------------------------------------------------
 
@@ -89,7 +89,7 @@ $(ODS_OBJ) : $(ODS_SRC)
 
 $(ODS_OBJ_TEST) : $(ODS_TEST_SOURCES)
 	@echo "[CC       ] $@"
-	$(ODS_QUIET) $(CC) $(BUILD_DEFINITIONS) $(TEST_DEFINITIONS)\
+	$(CC) $(BUILD_DEFINITIONS) $(TEST_DEFINITIONS)\
 	$(CFLAGS) $(ODS_FLAGS) -MMD \
 	-c  $(patsubst %.o,%.c,$(patsubst $(ODS_OBJDIR)/%,$(ODS_ROOT)/test/%,$@)) \
 	-o $@
