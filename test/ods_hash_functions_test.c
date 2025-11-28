@@ -38,7 +38,7 @@
 
         ------------------------------------------------------------------------
 */
-#include "ods_hash_functions.c"
+#include "../src/ods_hash_functions.c"
 #include "../include/testrun.h"
 
 #include "stdbool.h"

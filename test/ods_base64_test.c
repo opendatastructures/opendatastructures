@@ -39,7 +39,7 @@
         ------------------------------------------------------------------------
 */
 
-#include "ods_base64.c"
+#include "../src/ods_base64.c"
 #include "../include/testrun.h"
 
 static bool testing = true;
@@ -64,6 +64,7 @@ int test_ods_base64_alphabetPosition() {
     testrun(ods_base64_alphabetPosition(byte, alphabet) == 0);
     byte = 2;
     testrun(ods_base64_alphabetPosition(byte, alphabet) == -1);
+    
 
     return testrun_log_success();
 }

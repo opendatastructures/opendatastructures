@@ -37,101 +37,12 @@ include ./makefiles/makefile_const.mk
 #.............................................................................
 .PHONY: all clean
 
-all 			: target_prepare target_build
+all 			: target_prepare target_build target_test
 clean 			: target_clean
 
 #.............................................................................
 
 print-%  : ; @echo $* = $($*)
 
-#-----------------------------------------------------------------------------
+include ./makefiles/makefile_targets.mk
 
-$(ODS_BUILDDIR): target_prepare
-
-#-----------------------------------------------------------------------------
-
-target_prepare:
-# check if ODS_ROOT environment variable is set
-ifndef ODS_ROOT
-	$(error ODS_ROOT is not defined. Aborting.)
-endif
-#
-# check if build directory already exists
-ifneq ($(wildcard $(ODS_BUILDDIR)/.*),)
-	@echo "[PREPARE] build dir FOUND"
-else
-	@echo "[PREPARE] build dir NOT found, creating ..."
-	$(ODS_QUIET)$(ODS_MKDIR) $(ODS_BUILDDIR) $(ODS_NUL_STDERR)
-	$(ODS_QUIET)test -d $(ODS_BUILDDIR) || exit 1
-	$(ODS_QUIET)$(ODS_MKDIR) $(ODS_OBJDIR) $(ODS_NUL_STDERR)
-	$(ODS_QUIET)$(ODS_MKDIR) $(ODS_LIBDIR) $(ODS_NUL_STDERR)
-	$(ODS_QUIET)$(ODS_MKDIR) $(ODS_TESTDIR) $(ODS_NUL_STDERR)
-endif
-
-#-----------------------------------------------------------------------------
-
-target_clean:
-	@echo "[CLEAN  ] clean up ..."
-	$(ODS_QUIET)$(ODS_RMDIR) $(ODS_BUILDDIR)
-ifeq ($(CC), clang)
-	$(ODS_QUIET)$(ODS_RM) $(ODS_COMPILE_COMMANDS)
-endif
-	@echo "[CLEAN  ] done"
-
-#-----------------------------------------------------------------------------
-
-target_build: $(ODS_OBJ_FILE) $(ODS_STATIC) $(ODS_SHARED)
-
-#-----------------------------------------------------------------------------
-
-%.o : %.c
-	@echo "[CC     ] $@"
-	$(ODS_QUIET) $(CC) $(BUILD_DEFINITIONS) $(TEST_DEFINITIONS)\
-	$(CFLAGS) $(ODS_FLAGS) -MMD -c $< -o $(patsubst src/%,build/obj/%,$@)
-
-#-----------------------------------------------------------------------------
-
-$(ODS_STATIC):  $(ODS_OBJ)
-	$(ODs_QUIET)ar rcs $(ODS_STATIC) $(ODS_OBJ)
-	$(ODS_QUIET)ranlib $(ODS_STATIC)
-	@echo "[STATIC ] $(notdir $(ODS_STATIC)) created"
-
-#-----------------------------------------------------------------------------
-
-$(ODS_LIBDIR)/$(ODS_SHARED_REAL): $(ODS_OBJ)
-ifeq ($(ODS_UNAME), Linux)
-	$(ODS_QUIET)$(CC) -shared -o $@ $(ODS_OBJ) $(LFLAGS) \
-		-Wl,-soname,$(ODS_SHARED_SONAME) \
-		-Wl,--defsym -Wl,__ODS_LD_VERSION=0x$(ODS_VERSION_HEX) \
-		-Wl,--defsym -Wl,__ODS_LD_EDITION=0x$(ODS_EDITION) \
-		$(ODS_LIBS)
-else ifeq ($(ODS_UNAME), Darwin)
-	$(ODS_QUIET)$(CC) -shared -o $@ $(ODS_OBJ) $(LFLAGS) \
-		-compatibility_version $(ODS_VERSION) \
-		-current_version $(ODS_VERSION) \
-		$(ODS_LIBS)
-else
-	@echo "[SHARED ] OS $(ODS_UNAME) unsupported yet."
-endif
-ifeq ($(ODS_BUILD_MODE), STRIP)
-	$(ODS_QUIET)$(ODS_STRIP) $@
-endif
-	@echo "[SHARED ] $(notdir $@) created"
-
-#-----------------------------------------------------------------------------
-
-$(ODS_LIBDIR)/$(ODS_SHARED_LINKER_NAME): $(ODS_LIBDIR)/$(ODS_SHARED_REAL)
-	$(ODS_QUIET)$(shell \
-		cd $(ODS_LIBDIR) ; \
-		$(ODS_SYMLINK) $(ODS_SHARED_REAL) $(ODS_SHARED_LINKER_NAME); )
-	@echo "[LINK   ] $(notdir $@) created"
-
-#-----------------------------------------------------------------------------
-
-$(ODS_LIBDIR)/$(ODS_SHARED_SONAME): $(ODS_LIBDIR)/$(ODS_SHARED_REAL)
-	$(ODS_QUIET)$(shell \
-		cd $(ODS_LIBDIR) ; \
-		$(ODS_SYMLINK) $(ODS_SHARED_REAL) $(ODS_SHARED_SONAME);)
-	@echo "[LINK   ] $(notdir $@) created"
-
-#-----------------------------------------------------------------------------

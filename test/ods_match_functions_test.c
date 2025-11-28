@@ -38,7 +38,7 @@
 
         ------------------------------------------------------------------------
 */
-#include "ods_match_functions.c"
+#include "../src/ods_match_functions.c"
 #include "../include/testrun.h"
 
 /*
