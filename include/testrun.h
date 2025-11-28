@@ -1,7 +1,7 @@
 /***
     ----------------------------------------------------------------------------
 
-    Copyright 2025 Markus Töpfer
+    Copyright 2025 German Space Operations Center (GSOC) DLR e.V.
 
     Redistribution and use in source and binary forms, with or without 
     modification, are permitted provided that the following conditions are met:
@@ -33,9 +33,6 @@
 *//**
 
         @file           testrun.h
-        @author         Markus Toepfer
-        @author         Michael Beer
-        @date           2017-11-24
 
         @brief          Simple serial test execution framework.
 
