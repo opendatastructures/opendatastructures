@@ -74,7 +74,7 @@ target_build: $(ODS_TARGET)
 
 #-----------------------------------------------------------------------------
 
-target_test: $(ODS_TEST_TARGET) $(ODS_TEST_RESOURCE_TARGET)
+target_test: $(ODS_TEST_RESOURCE_TARGET) $(ODS_TEST_TARGET) 
 
 #-----------------------------------------------------------------------------
 
@@ -89,7 +89,7 @@ $(ODS_OBJ) : $(ODS_SRC)
 
 $(ODS_OBJ_TEST) : $(ODS_TEST_SOURCES)
 	@echo "[CC       ] $@"
-	$(CC) $(BUILD_DEFINITIONS) $(TEST_DEFINITIONS)\
+	$(ODS_QUIET) $(CC) $(BUILD_DEFINITIONS) $(TEST_DEFINITIONS) \
 	$(CFLAGS) $(ODS_FLAGS) -MMD \
 	-c  $(patsubst %.o,%.c,$(patsubst $(ODS_OBJDIR)/%,$(ODS_ROOT)/test/%,$@)) \
 	-o $@
@@ -113,7 +113,7 @@ $(ODS_TESTDIR)/%_test.run : $(ODS_OBJDIR)/%_test.o $(ODS_OBJ_IF_TEST) $(ODS_OBJ)
 
 # ... will create the directory for the resources and copy resources
 $(ODS_TEST_RESOURCE_TARGET): $(ODS_TEST_RESOURCE)
-	$(OV_QUIET) $(shell cp -r $(ODS_TEST_RESOURCE) $(ODS_TEST_RESOURCE_DIR)/)
+	 $(ODS_QUIET) $(shell cp -r $(ODS_TEST_RESOURCE) $(ODS_TEST_RESOURCE_DIR)/)
 
 #-----------------------------------------------------------------------------
 
